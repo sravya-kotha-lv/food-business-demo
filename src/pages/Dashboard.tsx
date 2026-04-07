@@ -1,9 +1,24 @@
+import { useState } from "react";
 import { Users, IndianRupee, TrendingUp, UserPlus, ShoppingBag, Award } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from "recharts";
 import StatCard from "@/components/StatCard";
 import { dashboardStats, revenueData, topPerformers } from "@/data/mlmData";
+import AddMemberDialog from "@/components/AddMemberDialog";
+import NewOrderDialog from "@/components/NewOrderDialog";
+import PayCommissionDialog from "@/components/PayCommissionDialog";
 
 const Dashboard = () => {
+  const [addMemberOpen, setAddMemberOpen] = useState(false);
+  const [newOrderOpen, setNewOrderOpen] = useState(false);
+  const [payCommissionOpen, setPayCommissionOpen] = useState(false);
+
+  const quickActions = [
+    { icon: UserPlus, label: "Add Member", color: "gradient-primary", onClick: () => setAddMemberOpen(true) },
+    { icon: ShoppingBag, label: "New Order", color: "gradient-secondary", onClick: () => setNewOrderOpen(true) },
+    { icon: IndianRupee, label: "Pay Commission", color: "gradient-primary", onClick: () => setPayCommissionOpen(true) },
+    { icon: Award, label: "Rank Reports", color: "gradient-secondary", onClick: () => {} },
+  ];
+
   return (
     <div className="space-y-8">
       <div>
@@ -68,14 +83,10 @@ const Dashboard = () => {
 
       {/* Quick Actions */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {[
-          { icon: UserPlus, label: "Add Member", color: "gradient-primary" },
-          { icon: ShoppingBag, label: "New Order", color: "gradient-secondary" },
-          { icon: IndianRupee, label: "Pay Commission", color: "gradient-primary" },
-          { icon: Award, label: "Rank Reports", color: "gradient-secondary" },
-        ].map((action) => (
+        {quickActions.map((action) => (
           <button
             key={action.label}
+            onClick={action.onClick}
             className="flex flex-col items-center gap-3 p-6 bg-card rounded-xl border border-border hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
           >
             <div className={`w-12 h-12 rounded-xl ${action.color} flex items-center justify-center`}>
@@ -85,6 +96,10 @@ const Dashboard = () => {
           </button>
         ))}
       </div>
+
+      <AddMemberDialog open={addMemberOpen} onOpenChange={setAddMemberOpen} />
+      <NewOrderDialog open={newOrderOpen} onOpenChange={setNewOrderOpen} />
+      <PayCommissionDialog open={payCommissionOpen} onOpenChange={setPayCommissionOpen} />
     </div>
   );
 };
