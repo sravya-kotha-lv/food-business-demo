@@ -1,4 +1,4 @@
-name: Food Business Demo CI/CD
+name: Vite React CI/CD
 
 on:
   push:
@@ -11,47 +11,25 @@ jobs:
 
     steps:
       # 1️⃣ Checkout code
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2️⃣ Setup Node.js
+      # 2️⃣ Setup Node
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
 
       # 3️⃣ Install dependencies
-      - name: Install Dependencies
+      - name: Install dependencies
         run: npm install
 
       # 4️⃣ Build project
-      - name: Build Project
+      - name: Build project
         run: npm run build
 
-      # 5️⃣ Ensure deployment directory exists + clean safely
-      - name: Prepare Server Directory
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            echo "Deploying to: ${{ secrets.SERVER_PATH }}"
-
-            # Stop if path is empty
-            if [ -z "${{ secrets.SERVER_PATH }}" ]; then
-              echo "ERROR: SERVER_PATH is not set"
-              exit 1
-            fi
-
-            # Create directory if not exists
-            mkdir -p "${{ secrets.SERVER_PATH }}"
-
-            # Clean old files (SAFE)
-            rm -rf "${{ secrets.SERVER_PATH }}"/*
-
-      # 6️⃣ Upload build files to server
-      - name: Upload Files to Server
+      # 5️⃣ Deploy to server via SSH
+      - name: Deploy to Server
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -60,7 +38,7 @@ jobs:
           source: "dist/*"
           target: ${{ secrets.SERVER_PATH }}
 
-      # 7️⃣ Restart NGINX
+      # 6️⃣ Restart NGINX (optional but recommended)
       - name: Restart NGINX
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -69,7 +47,3 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             sudo systemctl restart nginx
-
-      # 8️⃣ Success message
-      - name: Deployment Complete
-        run: echo "Food Business Demo Deployed Successfully 🚀"
