@@ -1,4 +1,4 @@
-name: Vite React CI/CD
+name: Food Business Demo CI/CD
 
 on:
   push:
