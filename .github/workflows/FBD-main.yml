@@ -10,25 +10,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout code
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # 2️⃣ Setup Node
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      # 3️⃣ Install dependencies
       - name: Install Dependencies
         run: npm install
 
-      # 4️⃣ Build Vite App
       - name: Build Project
         run: npm run build
 
-      # 5️⃣ Clean old files on server (IMPORTANT)
+      # ✅ SAFE CLEAN
       - name: Clean old deployment
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -36,9 +32,12 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            rm -rf ${{ secrets.SERVER_PATH }}/*
+            if [ -d "${{ secrets.SERVER_PATH }}" ]; then
+              rm -rf ${{ secrets.SERVER_PATH }}/*
+            else
+              mkdir -p ${{ secrets.SERVER_PATH }}
+            fi
 
-      # 6️⃣ Upload new build files
       - name: Upload to Server
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -48,7 +47,6 @@ jobs:
           source: "dist/*"
           target: ${{ secrets.SERVER_PATH }}
 
-      # 7️⃣ Restart NGINX
       - name: Restart NGINX
         uses: appleboy/ssh-action@v1.0.0
         with:
