@@ -32,18 +32,18 @@ jobs:
       - name: Deploy to Server
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.4.188.251.116 }}
-          username: ${{ secrets.azureuser }}
-          key: ${{ secrets.git@github.com:Chandini-lv/food-business-demo.git }}
+          host: 4.188.251.116 
+          username: azureuser 
+          key: https://github.com/Chandini-lv/food-business-demo.git 
           source: "dist/*"
-          target: ${{ secrets.var/www/food-business-demo }}
+          target: "/var/www/fooo-business-demo" 
 
       # 6️⃣ Restart NGINX (optional but recommended)
       - name: Restart NGINX
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.4.188.251.116 }}
-          username: ${{ secrets.azureuser }}
-          key: ${{ secrets.git@github.com:Chandini-lv/food-business-demo.git }}
+          host: 4.188.251.116 
+          username: azureuser 
+          key: https://github.com/Chandini-lv/food-business-demo.git
           script: |
             sudo systemctl restart nginx
