@@ -34,7 +34,7 @@ jobs:
         with:
           host: 4.188.251.116 
           username: azureuser 
-          key: git@github.com:Chandini-lv/food-business-demo.git 
+          key: git@github.com:Chandini-lv/food-business-demo.git
           source: "dist/*"
           target: "/var/www/fooo-business-demo" 
 
