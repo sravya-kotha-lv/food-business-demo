@@ -44,6 +44,6 @@ jobs:
         with:
           host: 4.188.251.116 
           username: azureuser 
-          key: https://github.com/Chandini-lv/food-business-demo.git
-          script: |
+          key: 
+          script: |git@github.com:Chandini-lv/food-business-demo.git 
             sudo systemctl restart nginx
