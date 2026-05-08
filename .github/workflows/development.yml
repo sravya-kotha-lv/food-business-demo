@@ -1,0 +1,24 @@
+name: Development Deployment
+
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Node Modules
+        run: npm install
+
+      - name: Build Application
+        run: npm run build
+
+      - name: Restart Development Server
+        run: |
+          pm2 restart development-app || pm2 start npm --name "development-app" -- start
