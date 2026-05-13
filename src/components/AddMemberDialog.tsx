@@ -22,6 +22,7 @@ const AddMemberDialog = ({ open, onOpenChange }: AddMemberDialogProps) => {
     rank: "Starter",
   });
 
+  console.log(form,"form");
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.phone) {
