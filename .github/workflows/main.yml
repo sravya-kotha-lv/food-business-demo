@@ -3,13 +3,9 @@ name: React Build Check
 on:
   push:
     branches:
+      - main
       - development
       - testing
-      - production
-
-  pull_request:
-    branches:
-      - main
       - production
 
 jobs:
